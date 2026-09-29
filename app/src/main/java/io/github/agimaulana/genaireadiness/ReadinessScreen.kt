@@ -2,6 +2,7 @@ package io.github.agimaulana.genaireadiness
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -108,7 +109,7 @@ private fun SystemCard(state: UiState) {
                 true -> "Installed${state.aiCoreVersion?.let { " (v$it)" } ?: ""}" to Green
                 false -> "Not found" to Red
             }
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            FlowRow(itemVerticalAlignment = Alignment.CenterVertically) {
                 Text("AICore app", Modifier.weight(1f))
                 StatusChip(label, color)
             }
@@ -129,9 +130,9 @@ private fun FeatureCard(feature: FeatureResult) {
                 }
             }
             Text(feature.description, style = MaterialTheme.typography.bodySmall)
-            if (feature.readiness == Readiness.ERROR) {
+            if (feature.readiness == Readiness.ERROR || feature.readiness == Readiness.UNAVAILABLE) {
                 feature.detail?.let {
-                    Text(it, style = MaterialTheme.typography.bodySmall, color = Red)
+                    Text(it, style = MaterialTheme.typography.bodySmall, color = feature.readiness.color)
                 }
             }
         }
